@@ -1,8 +1,19 @@
 import praw
+import nltk
+from nltk import word_tokenize
+def preprocessing(sentence):
+    
+    sentence=word_tokenize(sentence)
+    porter = nltk.PorterStemmer()
+    sentence=[porter.stem(t) for t in sentence]
+    wnl = nltk.WordNetLemmatizer()
+    sentence=[wnl.lemmatize(t) for t in sentence]
+    sentence=' '.join(sentence)
+    return sentence
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 #install twython and from nltk.download() get vader_lexicon in models
-reddit = praw.Reddit(user_agent='Comment Extraction (by /u/paddy1709)', client_id='ID', client_secret='SECRET', username='paddy1709', password='PASSWD')
+reddit = praw.Reddit(user_agent='Comment Extraction (by /u/paddy1709)', client_id='ZBfMvW4KD7Yr2A', client_secret='KVmYPP5cTUVmubAVaN5Eizbuo14', username='paddy1709', password='5368745')
 
 #submission = reddit.submission(url='https://www.reddit.com/r/SquaredCircle/comments/5si8pp/live_raw_discussion_thread_feb_6th_2017/')
 #submission.comments.replace_more(limit=100)
@@ -25,31 +36,34 @@ episodes=['https://www.reddit.com/r/asoiaf/comments/4gavuu/spoilers_extended_gam
  'https://www.reddit.com/r/asoiaf/comments/4q0ndz/spoilers_extended_game_of_thrones_season_6/']
 count=0
 for e in episodes:
-	submission=reddit.submission(url=e)
-	submission.comments.replace_more(limit=300)
-	pos_total=neg_total=0.0
-	flag=False
-	k=0
-	count+=1
-	for comment in submission.comments:
-	    	#print("score for the below comment is"+str(comment.score))
-	    	#print comment.body
-	    	flag=False
-		for i in comment.body.split(' '):
-			if i=='Tyrion' or i=='tyrion':
-				k=k+1
-				flag=True
-				#print k
-		if flag==False:
-			continue
-		
-		ss=sid.polarity_scores(comment.body)
-		print ss["pos"],ss["neg"], k
-		pos_total+=ss["pos"]
-		neg_total+=ss["neg"]
-		#print comment.body
-		#commentSubmission = reddit.submission(url="https://www.reddit.com"+comment.permalink(fast=True))
-	print "Episode :",count," Summary : "," Positive : ", pos_total, " Negative : ",neg_total, " No. of comments: ",k	
+    submission=reddit.submission(url=e)
+    submission.comments.replace_more(limit=10)
+    pos_total=neg_total=0.0
+    flag=False
+    k=0
+    count+=1
+    for comment in submission.comments:
+        #print(comment)
+        preprocessing(comment.body)
+        #print("score for the below comment is"+str(comment.score))
+        #print comment.body
+        flag=False
+        for i in comment.body.split(' '):
+            
+            if i=='Tyrion' or i=='tyrion':
+                k=k+1
+                flag=True
+                #print k
+        if flag==False:
+            continue
+
+        ss=sid.polarity_scores(comment.body)
+        print ss["pos"],ss["neg"], k
+        pos_total+=ss["pos"]
+        neg_total+=ss["neg"]
+        #print comment.body
+        #commentSubmission = reddit.submission(url="https://www.reddit.com"+comment.permalink(fast=True))
+        print "Episode :",count," Summary : "," Positive : ", pos_total, " Negative : ",neg_total, " No. of comments: ",k	
 
 """
 		print("https://www.reddit.com"+comment.permalink(fast=True))
