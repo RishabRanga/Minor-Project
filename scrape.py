@@ -13,7 +13,7 @@ def preprocessing(sentence):
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 #install twython and from nltk.download() get vader_lexicon in models
-reddit = praw.Reddit(user_agent='Comment Extraction (by /u/paddy1709)', client_id='ZBfMvW4KD7Yr2A', client_secret='KVmYPP5cTUVmubAVaN5Eizbuo14', username='paddy1709', password='5368745')
+reddit = praw.Reddit(user_agent='Comment Extraction (by /u/paddy1709)', client_id='', client_secret='', username='', password='')
 
 #submission = reddit.submission(url='https://www.reddit.com/r/SquaredCircle/comments/5si8pp/live_raw_discussion_thread_feb_6th_2017/')
 #submission.comments.replace_more(limit=100)
