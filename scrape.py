@@ -44,7 +44,7 @@ for e in episodes:
     count+=1
     for comment in submission.comments:
         #print(comment)
-        preprocessing(comment.body)
+        comment.body=preprocessing(comment.body)
         #print("score for the below comment is"+str(comment.score))
         #print comment.body
         flag=False
